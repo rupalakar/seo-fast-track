@@ -29,8 +29,7 @@ export default function SettingsPage() {
   async function handleSignOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.replace("/login");
-    router.refresh();
+    // AppShell reacts to the auth state change and redirects to /login itself.
   }
 
   function handleExport() {

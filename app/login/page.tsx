@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 type Mode = "sign-in" | "sign-up";
 
 export default function LoginPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<Mode>("sign-in");
   const [email, setEmail] = useState("");
@@ -32,26 +31,27 @@ export default function LoginPage() {
 
     if (mode === "sign-in") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      setLoading(false);
       if (error) {
+        setLoading(false);
         setError(error.message);
         return;
       }
-      router.replace("/dashboard");
-      router.refresh();
+      // Success: leave loading=true. AppShell reacts to the auth state change
+      // and does the redirect — this page intentionally does not navigate
+      // itself, so there's only ever one place deciding when to redirect.
     } else {
       const { data, error } = await supabase.auth.signUp({ email, password });
-      setLoading(false);
       if (error) {
+        setLoading(false);
         setError(error.message);
         return;
       }
       if (!data.session) {
+        setLoading(false);
         setCheckEmail(true);
         return;
       }
-      router.replace("/onboarding");
-      router.refresh();
+      // Same as above: session created immediately, let AppShell redirect.
     }
   }
 

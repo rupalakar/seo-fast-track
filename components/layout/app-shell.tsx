@@ -27,17 +27,43 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const profile = useOnboardingStore((s) => s.profile);
 
   const [syncedForUserId, setSyncedForUserId] = useState<string | null>(null);
-  const wasLoggedIn = useRef(false);
+  // Tracks whose data is currently loaded locally, so we can tell "still the
+  // same user" apart from "a different user just signed in on this browser"
+  // apart from "nobody was signed in yet" — each needs different handling.
+  const loadedUserId = useRef<string | null>(null);
 
   const isPublic = PUBLIC_ROUTES.some((r) => pathname.startsWith(r));
   const isOnboardingExempt = ONBOARDING_EXEMPT_ROUTES.some((r) => pathname.startsWith(r));
   const synced = user ? syncedForUserId === user.id : false;
 
-  // Hydrate from Supabase + attach live sync whenever a new user session starts.
+  // Single source of truth for cloud sync: hydrate + attach whenever the
+  // signed-in user differs from whoever's data is currently loaded, and wipe
+  // local state on sign-out (or account switch) so stale data never leaks
+  // between accounts sharing a browser.
   useEffect(() => {
-    if (!user) return;
-    if (syncedForUserId === user.id) return;
+    if (user === undefined) return; // auth state still loading
+
+    if (!user) {
+      if (loadedUserId.current !== null) {
+        detachCloudSync();
+        resetAllData();
+        loadedUserId.current = null;
+        setSyncedForUserId(null);
+      }
+      return;
+    }
+
+    if (loadedUserId.current === user.id) return; // already loaded for this user
+
     let cancelled = false;
+    if (loadedUserId.current !== null) {
+      // Switching accounts without an intervening sign-out — clear the
+      // previous user's data before pulling in the new one's.
+      detachCloudSync();
+      resetAllData();
+    }
+    loadedUserId.current = user.id;
+
     hydrateAllStoresFromCloud(user.id).then(() => {
       if (cancelled) return;
       attachCloudSync(user.id);
@@ -46,19 +72,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [user, syncedForUserId]);
-
-  // Detach sync and wipe local state on logout so the next login starts clean.
-  useEffect(() => {
-    if (user === null && wasLoggedIn.current) {
-      detachCloudSync();
-      resetAllData();
-      setSyncedForUserId(null);
-    }
-    if (user) wasLoggedIn.current = true;
   }, [user]);
 
-  // Redirects.
+  // Redirects. AppShell is the only place that navigates based on auth/
+  // onboarding state — pages that trigger sign-in/out just let this effect
+  // react, instead of also redirecting themselves, to avoid both racing.
   useEffect(() => {
     if (user === undefined) return;
     if (!user) {
