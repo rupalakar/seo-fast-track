@@ -52,6 +52,8 @@ export interface Lesson {
   estMinutes: number;
   blocks: ContentBlock[];
   sources: { label: string; url: string }[];
+  /** Indonesian search phrase used to link to relevant YouTube videos — no specific video URLs are hardcoded since they can't be verified to still exist. */
+  videoSearchQuery?: string;
 }
 
 export type QuizSection = "A" | "B" | "C" | "D" | "E";

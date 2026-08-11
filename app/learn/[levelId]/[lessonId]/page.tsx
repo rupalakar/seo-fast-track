@@ -7,10 +7,12 @@ import { LEVELS } from "@/content/levels";
 import { LESSONS } from "@/content/lessons";
 import { useProgressStore } from "@/lib/store";
 import { ContentBlockRenderer } from "@/components/learn/content-block";
+import { AskAiWidget } from "@/components/ai/ask-ai-widget";
+import { lessonToPlainText } from "@/lib/domain/pageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, ExternalLink } from "lucide-react";
+import { CheckCircle2, ExternalLink, Video } from "lucide-react";
 
 export default function LessonPage({
   params,
@@ -79,6 +81,20 @@ export default function LessonPage({
         ))}
       </div>
 
+      {lesson.videoSearchQuery && (
+        <a
+          href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
+            lesson.videoSearchQuery
+          )}&hl=id&gl=ID`}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 flex items-center gap-2.5 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700 hover:border-zinc-400"
+        >
+          <Video className="h-4 w-4 shrink-0 text-red-600" />
+          Cari video penjelasan (Bahasa Indonesia) untuk topik ini
+        </a>
+      )}
+
       {lesson.sources.length > 0 && (
         <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 p-4">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
@@ -113,6 +129,8 @@ export default function LessonPage({
           {status === "completed" ? "Sudah Selesai — Lanjut" : "Tandai Selesai"}
         </Button>
       </div>
+
+      <AskAiWidget pageTitle={lesson.title} pageContext={lessonToPlainText(lesson)} />
     </div>
   );
 }

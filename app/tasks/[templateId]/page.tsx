@@ -12,6 +12,8 @@ import { TASK_STATUS_BADGE_VARIANT } from "@/lib/domain/taskStatusStyle";
 import { EvidenceForm } from "@/components/tasks/evidence-form";
 import { RubricChecklist } from "@/components/tasks/rubric-checklist";
 import { HistoryTimeline } from "@/components/tasks/history-timeline";
+import { AskAiWidget } from "@/components/ai/ask-ai-widget";
+import { taskToPlainText } from "@/lib/domain/pageContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -207,6 +209,8 @@ export default function TaskDetailPage({
           <HistoryTimeline history={instance.history} />
         </>
       )}
+
+      <AskAiWidget pageTitle={template.title} pageContext={taskToPlainText(template)} />
     </div>
   );
 }
