@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { InterviewPracticeLog } from "@/lib/types/state";
 
 interface InterviewState {
@@ -8,30 +7,25 @@ interface InterviewState {
   reset: () => void;
 }
 
-export const useInterviewStore = create<InterviewState>()(
-  persist(
-    (set, get) => ({
-      logs: {},
-      setLog: (questionId, patch) => {
-        const existing = get().logs[questionId] ?? {
-          questionId,
-          notes: "",
-          confidence: 1 as const,
-          lastPracticedAt: "",
-        };
-        set((s) => ({
-          logs: {
-            ...s.logs,
-            [questionId]: {
-              ...existing,
-              ...patch,
-              lastPracticedAt: new Date().toISOString(),
-            },
-          },
-        }));
+export const useInterviewStore = create<InterviewState>()((set, get) => ({
+  logs: {},
+  setLog: (questionId, patch) => {
+    const existing = get().logs[questionId] ?? {
+      questionId,
+      notes: "",
+      confidence: 1 as const,
+      lastPracticedAt: "",
+    };
+    set((s) => ({
+      logs: {
+        ...s.logs,
+        [questionId]: {
+          ...existing,
+          ...patch,
+          lastPracticedAt: new Date().toISOString(),
+        },
       },
-      reset: () => set({ logs: {} }),
-    }),
-    { name: "seo-ft/interview", skipHydration: true }
-  )
-);
+    }));
+  },
+  reset: () => set({ logs: {} }),
+}));

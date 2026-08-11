@@ -3,6 +3,8 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { exportAllData, importAllData, resetAllData, type ExportedData } from "@/lib/store/exportImport";
+import { createClient } from "@/lib/supabase/client";
+import { useSupabaseUser } from "@/lib/supabase/useUser";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,14 +16,22 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Download, Upload, Trash2 } from "lucide-react";
+import { Download, Upload, Trash2, LogOut } from "lucide-react";
 
 export default function SettingsPage() {
   const router = useRouter();
+  const user = useSupabaseUser();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [pendingImport, setPendingImport] = useState<ExportedData | null>(null);
   const [resetOpen, setResetOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.replace("/login");
+    router.refresh();
+  }
 
   function handleExport() {
     const payload = exportAllData();
@@ -71,15 +81,29 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="Pengaturan" description="Semua data disimpan di browser ini (localStorage)." />
+      <PageHeader
+        title="Pengaturan"
+        description="Data tersimpan otomatis ke akunmu — bisa diakses dari perangkat mana pun setelah login."
+      />
 
       <div className="space-y-4">
         <Card>
           <CardHeader>
+            <CardTitle className="text-sm">Akun</CardTitle>
+            <CardDescription>{user?.email ?? "-"}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="outline" onClick={handleSignOut}>
+              <LogOut className="h-4 w-4" /> Keluar
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle className="text-sm">Backup Data</CardTitle>
             <CardDescription>
-              Unduh seluruh progresmu sebagai file JSON. Simpan file ini sebagai cadangan, karena data
-              hanya tersimpan di browser ini.
+              Unduh seluruh progresmu sebagai file JSON — cadangan tambahan di luar penyimpanan cloud.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -93,7 +117,7 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-sm">Pulihkan dari Backup</CardTitle>
             <CardDescription>
-              Mengimpor file backup akan menimpa seluruh data yang ada saat ini di browser ini.
+              Mengimpor file backup akan menimpa seluruh data di akunmu saat ini.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -116,7 +140,7 @@ export default function SettingsPage() {
             <CardTitle className="text-sm text-red-700">Reset Semua Data</CardTitle>
             <CardDescription>
               Menghapus semua progres (onboarding, quiz, lesson, tugas, portofolio, lamaran,
-              networking, interview) dan mengulang dari awal.
+              networking, interview) dari akunmu dan mengulang dari awal.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -153,7 +177,7 @@ export default function SettingsPage() {
             <DialogTitle>Reset semua data?</DialogTitle>
             <DialogDescription>
               Semua progres belajar, tugas, portofolio, lamaran kerja, networking, dan interview akan
-              dihapus permanen dari browser ini.
+              dihapus permanen dari akunmu.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

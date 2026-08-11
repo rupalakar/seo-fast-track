@@ -7,7 +7,7 @@ import { useApplicationsStore } from "./applications";
 import { useNetworkingStore } from "./networking";
 import { useInterviewStore } from "./interview";
 
-type DomainKey =
+export type DomainKey =
   | "onboarding"
   | "quiz"
   | "progress"
