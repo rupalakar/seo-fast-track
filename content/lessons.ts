@@ -80,6 +80,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_HOW_SEARCH_WORKS],
+    videoSearchQuery: "cara kerja google mencari halaman crawling indexing ranking",
   },
   {
     id: "fund-02-ranking-factors",
@@ -109,6 +110,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "faktor ranking google SEO penjelasan",
   },
   {
     id: "fund-03-white-hat-black-hat",
@@ -130,6 +132,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "white hat vs black hat SEO penjelasan",
   },
   {
     id: "fund-04-seo-vs-sem",
@@ -153,6 +156,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_HOW_SEARCH_WORKS],
+    videoSearchQuery: "perbedaan SEO dan SEM",
   },
   {
     id: "fund-05-seo-role-in-business",
@@ -174,6 +178,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "peran SEO untuk bisnis penjelasan",
   },
 
   // ---- LEVEL 1 — Keyword & Search Intent (5) ----
@@ -200,6 +205,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "cara riset keyword SEO untuk pemula",
   },
   {
     id: "kw-02-short-tail-long-tail",
@@ -221,6 +227,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "long tail keyword vs short tail keyword",
   },
   {
     id: "kw-03-search-intent-types",
@@ -247,6 +254,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "jenis search intent SEO penjelasan",
   },
   {
     id: "kw-04-reading-serp-for-intent",
@@ -271,6 +279,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "cara analisis SERP google",
   },
   {
     id: "kw-05-keyword-mapping",
@@ -300,6 +309,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "cara membuat keyword mapping SEO",
   },
 
   // ---- LEVEL 2 — On-Page SEO (5) ----
@@ -331,6 +341,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_TITLE_LINKS],
+    videoSearchQuery: "cara menulis title tag SEO",
   },
   {
     id: "op-02-meta-description",
@@ -355,6 +366,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SNIPPETS],
+    videoSearchQuery: "cara menulis meta description SEO",
   },
   {
     id: "op-03-heading-structure",
@@ -375,6 +387,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "struktur heading H1 H2 H3 SEO",
   },
   {
     id: "op-04-internal-linking",
@@ -399,6 +412,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "internal linking SEO penjelasan",
   },
   {
     id: "op-05-content-quality",
@@ -420,6 +434,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEO_STARTER],
+    videoSearchQuery: "cara menulis konten SEO friendly",
   },
 
   // ---- LEVEL 3-LITE — Technical SEO Basics (3) ----
@@ -446,6 +461,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_CRAWLING_INDEXING],
+    videoSearchQuery: "crawling dan indexing google penjelasan lengkap",
   },
   {
     id: "tech-02-robots-sitemap",
@@ -470,6 +486,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_ROBOTS, GOOGLE_SITEMAPS],
+    videoSearchQuery: "robots txt dan sitemap xml tutorial",
   },
   {
     id: "tech-03-http-status-gsc-coverage",
@@ -495,6 +512,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GOOGLE_SEARCH_CONSOLE_COVERAGE],
+    videoSearchQuery: "http status code dan google search console coverage",
   },
 
   // ---- LEVEL 5-LITE — Measurement Basics (3) ----
@@ -523,6 +541,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GSC_PERFORMANCE],
+    videoSearchQuery: "tutorial google search console untuk pemula",
   },
   {
     id: "meas-02-ga4-basics",
@@ -547,6 +566,7 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GA4_INTRO],
+    videoSearchQuery: "tutorial google analytics 4 untuk pemula",
   },
   {
     id: "meas-03-connecting-gsc-ga4-to-decisions",
@@ -572,5 +592,6 @@ export const LESSONS: Lesson[] = [
       },
     ],
     sources: [GSC_PERFORMANCE, GA4_INTRO, PAGESPEED_INSIGHTS],
+    videoSearchQuery: "cara analisis data google search console dan GA4",
   },
 ];
