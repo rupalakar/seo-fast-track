@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useSupabaseUser } from "@/lib/supabase/useUser";
 import { hydrateAllStoresFromCloud, attachCloudSync, detachCloudSync } from "@/lib/supabase/sync";
 import { resetAllData } from "@/lib/store/exportImport";
+import { useLessonsStore } from "@/lib/store/lessonsRemote";
 import { useOnboardingStore } from "@/lib/store";
 import { Sidebar } from "@/components/layout/sidebar";
 import { TopBar } from "@/components/layout/top-bar";
@@ -72,6 +73,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
+  }, [user]);
+
+  // Lessons are shared content, not per-user — fetch once per session as
+  // soon as we have an authenticated client, independent of the per-user
+  // sync/hydration above.
+  useEffect(() => {
+    if (!user) return;
+    const { loaded, loading, fetchLessons } = useLessonsStore.getState();
+    if (!loaded && !loading) fetchLessons();
   }, [user]);
 
   // Redirects. AppShell is the only place that navigates based on auth/

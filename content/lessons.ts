@@ -1,49 +1,60 @@
 import type { Lesson } from "@/lib/types/content";
 
 const GOOGLE_HOW_SEARCH_WORKS = {
+  type: "article",
   label: "Google — How Search Works",
   url: "https://developers.google.com/search/docs/fundamentals/how-search-works",
-};
+} as const;
 const GOOGLE_SEO_STARTER = {
+  type: "article",
   label: "Google — SEO Starter Guide",
   url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
-};
+} as const;
 const GOOGLE_CRAWLING_INDEXING = {
+  type: "article",
   label: "Google — Crawling and Indexing",
   url: "https://developers.google.com/search/docs/crawling-indexing",
-};
+} as const;
 const GOOGLE_ROBOTS = {
+  type: "article",
   label: "Google — Robots.txt Introduction",
   url: "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
-};
+} as const;
 const GOOGLE_SITEMAPS = {
+  type: "article",
   label: "Google — Build and Submit a Sitemap",
   url: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
-};
+} as const;
 const GOOGLE_SEARCH_CONSOLE_COVERAGE = {
+  type: "article",
   label: "Search Console Help — Index Coverage Report",
   url: "https://support.google.com/webmasters/answer/7440203",
-};
+} as const;
 const GOOGLE_TITLE_LINKS = {
+  type: "article",
   label: "Google — Influence Your Title Links",
   url: "https://developers.google.com/search/docs/appearance/title-link",
-};
+} as const;
 const GOOGLE_SNIPPETS = {
+  type: "article",
   label: "Google — Control Your Snippets",
   url: "https://developers.google.com/search/docs/appearance/snippet",
-};
+} as const;
 const GA4_INTRO = {
+  type: "article",
   label: "Google Analytics Help — GA4 Introduction",
   url: "https://support.google.com/analytics/answer/10089681",
-};
+} as const;
 const GSC_PERFORMANCE = {
+  type: "article",
   label: "Search Console Help — Performance Report",
   url: "https://support.google.com/webmasters/answer/7042828",
-};
+} as const;
 const PAGESPEED_INSIGHTS = {
+  type: "article",
   label: "PageSpeed Insights — About",
   url: "https://developers.google.com/speed/docs/insights/v5/about",
-};
+} as const;
 
 export const LESSONS: Lesson[] = [
   // ---- LEVEL 0 — SEO Fundamentals (5) ----
@@ -79,7 +90,7 @@ export const LESSONS: Lesson[] = [
         text: "Sebagian besar masalah SEO sebenarnya adalah masalah di salah satu dari tiga tahap ini. Memahami urutannya membantumu mendiagnosis masalah dengan lebih cepat di pekerjaan nanti.",
       },
     ],
-    sources: [GOOGLE_HOW_SEARCH_WORKS],
+    resources: [GOOGLE_HOW_SEARCH_WORKS],
     videoSearchQuery: "cara kerja google mencari halaman crawling indexing ranking",
   },
   {
@@ -109,7 +120,7 @@ export const LESSONS: Lesson[] = [
         text: "Hindari mempercayai mitos SEO seperti 'keyword density 3% wajib' atau 'meta keywords mempengaruhi ranking'. Google sudah mengonfirmasi keduanya tidak berlaku.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "faktor ranking google SEO penjelasan",
   },
   {
@@ -131,7 +142,7 @@ export const LESSONS: Lesson[] = [
         text: "Sebagai SEO specialist pemula, fokuslah 100% pada praktik white hat. Ini yang akan dipercaya oleh employer dan klien.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "white hat vs black hat SEO penjelasan",
   },
   {
@@ -155,7 +166,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_HOW_SEARCH_WORKS],
+    resources: [GOOGLE_HOW_SEARCH_WORKS],
     videoSearchQuery: "perbedaan SEO dan SEM",
   },
   {
@@ -177,7 +188,7 @@ export const LESSONS: Lesson[] = [
         text: "Saat interview nanti, kamu akan sering ditanya 'dampak apa yang kamu hasilkan', bukan hanya 'apa yang kamu kerjakan'. Mulai biasakan berpikir dengan kerangka ini sejak sekarang.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "peran SEO untuk bisnis penjelasan",
   },
 
@@ -204,7 +215,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "cara riset keyword SEO untuk pemula",
   },
   {
@@ -226,7 +237,7 @@ export const LESSONS: Lesson[] = [
         text: "Untuk website baru atau kecil, long-tail keyword biasanya lebih realistis untuk ditargetkan lebih dulu.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "long tail keyword vs short tail keyword",
   },
   {
@@ -253,7 +264,7 @@ export const LESSONS: Lesson[] = [
         text: "Menargetkan keyword dengan intent yang salah adalah salah satu penyebab utama konten tidak pernah ranking, sekalipun sudah dioptimasi dengan baik.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "jenis search intent SEO penjelasan",
   },
   {
@@ -278,7 +289,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "cara analisis SERP google",
   },
   {
@@ -308,7 +319,7 @@ export const LESSONS: Lesson[] = [
         text: "Project praktik di level ini adalah membuat Keyword Map sungguhan — ini akan jadi salah satu bukti kerja pertamamu.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "cara membuat keyword mapping SEO",
   },
 
@@ -340,7 +351,7 @@ export const LESSONS: Lesson[] = [
         text: "Google terkadang menulis ulang title link secara otomatis jika dianggap kurang relevan dengan query pengguna — ini normal dan bukan berarti title kamu salah.",
       },
     ],
-    sources: [GOOGLE_TITLE_LINKS],
+    resources: [GOOGLE_TITLE_LINKS],
     videoSearchQuery: "cara menulis title tag SEO",
   },
   {
@@ -365,7 +376,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_SNIPPETS],
+    resources: [GOOGLE_SNIPPETS],
     videoSearchQuery: "cara menulis meta description SEO",
   },
   {
@@ -386,7 +397,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "struktur heading H1 H2 H3 SEO",
   },
   {
@@ -411,7 +422,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "internal linking SEO penjelasan",
   },
   {
@@ -433,7 +444,7 @@ export const LESSONS: Lesson[] = [
         text: "Sebelum menulis atau mengedit konten, selalu cek dulu search intent keyword targetnya melalui SERP.",
       },
     ],
-    sources: [GOOGLE_SEO_STARTER],
+    resources: [GOOGLE_SEO_STARTER],
     videoSearchQuery: "cara menulis konten SEO friendly",
   },
 
@@ -460,7 +471,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_CRAWLING_INDEXING],
+    resources: [GOOGLE_CRAWLING_INDEXING],
     videoSearchQuery: "crawling dan indexing google penjelasan lengkap",
   },
   {
@@ -485,7 +496,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GOOGLE_ROBOTS, GOOGLE_SITEMAPS],
+    resources: [GOOGLE_ROBOTS, GOOGLE_SITEMAPS],
     videoSearchQuery: "robots txt dan sitemap xml tutorial",
   },
   {
@@ -511,7 +522,7 @@ export const LESSONS: Lesson[] = [
         text: "Laporan Coverage (Pages) di Google Search Console menunjukkan halaman mana yang berhasil diindex, dan halaman mana yang gagal diindex beserta alasannya. Ini adalah salah satu tool paling penting untuk technical SEO audit.",
       },
     ],
-    sources: [GOOGLE_SEARCH_CONSOLE_COVERAGE],
+    resources: [GOOGLE_SEARCH_CONSOLE_COVERAGE],
     videoSearchQuery: "http status code dan google search console coverage",
   },
 
@@ -540,7 +551,7 @@ export const LESSONS: Lesson[] = [
         text: "Impressions naik tapi klik turun bisa berarti banyak hal — posisi turun, title/meta kurang menarik, atau muncul di query yang kurang relevan. Ini pertanyaan interview yang cukup umum.",
       },
     ],
-    sources: [GSC_PERFORMANCE],
+    resources: [GSC_PERFORMANCE],
     videoSearchQuery: "tutorial google search console untuk pemula",
   },
   {
@@ -565,7 +576,7 @@ export const LESSONS: Lesson[] = [
         ],
       },
     ],
-    sources: [GA4_INTRO],
+    resources: [GA4_INTRO],
     videoSearchQuery: "tutorial google analytics 4 untuk pemula",
   },
   {
@@ -591,7 +602,7 @@ export const LESSONS: Lesson[] = [
         text: "Contoh alur berpikir: impressions tinggi tapi CTR rendah di GSC → cek title/meta description → bandingkan dengan engagement rate di GA4 setelah klik masuk.",
       },
     ],
-    sources: [GSC_PERFORMANCE, GA4_INTRO, PAGESPEED_INSIGHTS],
+    resources: [GSC_PERFORMANCE, GA4_INTRO, PAGESPEED_INSIGHTS],
     videoSearchQuery: "cara analisis data google search console dan GA4",
   },
 ];

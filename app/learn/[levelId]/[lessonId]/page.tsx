@@ -4,15 +4,17 @@ import { use, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, notFound } from "next/navigation";
 import { LEVELS } from "@/content/levels";
-import { LESSONS } from "@/content/lessons";
 import { useProgressStore } from "@/lib/store";
+import { useLessonsStore } from "@/lib/store/lessonsRemote";
 import { ContentBlockRenderer } from "@/components/learn/content-block";
 import { AskAiWidget } from "@/components/ai/ask-ai-widget";
+import { LessonResourceLink } from "@/components/learn/lesson-resource-link";
+import { ReportLessonButton } from "@/components/learn/report-lesson-button";
 import { lessonToPlainText } from "@/lib/domain/pageContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, ExternalLink, Video } from "lucide-react";
+import { CheckCircle2, Video } from "lucide-react";
 
 export default function LessonPage({
   params,
@@ -22,7 +24,9 @@ export default function LessonPage({
   const { levelId, lessonId } = use(params);
   const router = useRouter();
   const level = LEVELS.find((l) => l.id === levelId);
-  const lesson = LESSONS.find((l) => l.id === lessonId && l.levelId === levelId);
+  const allLessons = useLessonsStore((s) => s.lessons);
+  const lessonsLoaded = useLessonsStore((s) => s.loaded);
+  const lesson = allLessons.find((l) => l.id === lessonId && l.levelId === levelId);
   const lessonStatus = useProgressStore((s) => s.lessonStatus);
   const setLessonStatus = useProgressStore((s) => s.setLessonStatus);
 
@@ -35,14 +39,20 @@ export default function LessonPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lesson?.id]);
 
-  if (!level || !lesson) notFound();
+  if (!level) notFound();
+  if (!lesson) {
+    if (!lessonsLoaded) return null;
+    notFound();
+  }
 
-  const levelLessons = LESSONS.filter((l) => l.levelId === level.id).sort(
-    (a, b) => a.order - b.order
-  );
+  const levelLessons = allLessons
+    .filter((l) => l.levelId === level.id)
+    .sort((a, b) => a.order - b.order);
   const currentIndex = levelLessons.findIndex((l) => l.id === lesson.id);
   const prevLesson = levelLessons[currentIndex - 1];
   const nextLesson = levelLessons[currentIndex + 1];
+
+  const hasExplicitVideo = lesson.resources.some((r) => r.type === "youtube");
 
   function handleComplete() {
     setLessonStatus(lesson!.id, "completed");
@@ -70,7 +80,10 @@ export default function LessonPage({
           </Badge>
         )}
       </div>
-      <h1 className="mt-2 text-xl font-semibold text-zinc-900">{lesson.title}</h1>
+      <div className="mt-2 flex items-start justify-between gap-3">
+        <h1 className="text-xl font-semibold text-zinc-900">{lesson.title}</h1>
+        <ReportLessonButton lessonId={lesson.id} lessonTitle={lesson.title} />
+      </div>
       <p className="mt-1 text-sm text-zinc-500">{lesson.summary}</p>
 
       <Separator className="my-6" />
@@ -81,40 +94,31 @@ export default function LessonPage({
         ))}
       </div>
 
-      {lesson.videoSearchQuery && (
+      {lesson.resources.length > 0 && (
+        <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 p-4">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
+            Materi Pendukung
+          </p>
+          <div className="space-y-1">
+            {lesson.resources.map((r, i) => (
+              <LessonResourceLink key={`${r.url}-${i}`} resource={r} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!hasExplicitVideo && lesson.videoSearchQuery && (
         <a
           href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
             lesson.videoSearchQuery
           )}&hl=id&gl=ID`}
           target="_blank"
           rel="noreferrer"
-          className="mt-6 flex items-center gap-2.5 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700 hover:border-zinc-400"
+          className="mt-3 flex items-center gap-2.5 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-700 hover:border-zinc-400"
         >
           <Video className="h-4 w-4 shrink-0 text-red-600" />
           Cari video penjelasan (Bahasa Indonesia) untuk topik ini
         </a>
-      )}
-
-      {lesson.sources.length > 0 && (
-        <div className="mt-6 rounded-md border border-zinc-200 bg-zinc-50 p-4">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">
-            Sumber
-          </p>
-          <div className="space-y-1">
-            {lesson.sources.map((s) => (
-              <a
-                key={s.url}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 text-sm text-zinc-600 hover:underline"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                {s.label}
-              </a>
-            ))}
-          </div>
-        </div>
       )}
 
       <div className="mt-8 flex items-center justify-between">

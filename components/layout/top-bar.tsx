@@ -7,6 +7,8 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useSupabaseUser } from "@/lib/supabase/useUser";
+import { useIsAdmin } from "@/lib/supabase/useIsAdmin";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard" },
@@ -23,6 +25,9 @@ const NAV_ITEMS = [
 export function TopBar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const user = useSupabaseUser();
+  const isAdmin = useIsAdmin(user);
+  const navItems = isAdmin ? [...NAV_ITEMS, { href: "/admin", label: "Admin" }] : NAV_ITEMS;
 
   return (
     <header className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-3 sm:hidden">
@@ -34,7 +39,7 @@ export function TopBar() {
         <DialogContent className="max-w-xs">
           <DialogTitle>Menu</DialogTitle>
           <nav className="mt-2 flex flex-col gap-1">
-            {NAV_ITEMS.map((item) => (
+            {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

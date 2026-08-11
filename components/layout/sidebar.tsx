@@ -12,8 +12,11 @@ import {
   MessageSquare,
   Target,
   Settings,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSupabaseUser } from "@/lib/supabase/useUser";
+import { useIsAdmin } from "@/lib/supabase/useIsAdmin";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -28,6 +31,8 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const user = useSupabaseUser();
+  const isAdmin = useIsAdmin(user);
 
   return (
     <aside className="hidden w-60 shrink-0 border-r border-zinc-200 bg-white sm:flex sm:flex-col">
@@ -57,7 +62,21 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <div className="px-3 pb-4">
+      <div className="space-y-0.5 px-3 pb-4">
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className={cn(
+              "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              pathname.startsWith("/admin")
+                ? "bg-zinc-900 text-zinc-50"
+                : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+            )}
+          >
+            <ShieldCheck className="h-4 w-4" />
+            Admin
+          </Link>
+        )}
         <Link
           href="/settings"
           className={cn(

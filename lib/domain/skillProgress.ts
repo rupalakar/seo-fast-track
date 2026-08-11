@@ -1,6 +1,5 @@
-import type { SkillId } from "@/lib/types/content";
+import type { Lesson, SkillId } from "@/lib/types/content";
 import type { LessonStatus, TaskInstance } from "@/lib/types/state";
-import { LESSONS } from "@/content/lessons";
 import { TASK_TEMPLATES } from "@/content/tasks";
 
 export interface SkillProgress {
@@ -22,9 +21,10 @@ function labelFor(percent: number): SkillProgress["label"] {
 export function computeSkillProgress(
   skillId: SkillId,
   lessonStatus: Record<string, LessonStatus>,
-  taskInstances: Record<string, TaskInstance>
+  taskInstances: Record<string, TaskInstance>,
+  lessons: Lesson[]
 ): SkillProgress {
-  const skillLessons = LESSONS.filter((l) => l.skillId === skillId);
+  const skillLessons = lessons.filter((l) => l.skillId === skillId);
   const skillTasks = TASK_TEMPLATES.filter((t) => t.skillId === skillId);
 
   const lessonsTotal = skillLessons.length;

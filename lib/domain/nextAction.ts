@@ -1,7 +1,6 @@
 import { LEVELS } from "@/content/levels";
-import { LESSONS } from "@/content/lessons";
 import { TASK_TEMPLATES } from "@/content/tasks";
-import type { LevelId } from "@/lib/types/content";
+import type { LevelId, Lesson } from "@/lib/types/content";
 import type { LessonStatus, OnboardingProfile, QuizAttempt, TaskInstance } from "@/lib/types/state";
 
 export interface NextAction {
@@ -15,11 +14,13 @@ export function getNextAction({
   attempt,
   lessonStatus,
   taskInstances,
+  lessons,
 }: {
   profile: OnboardingProfile | null;
   attempt: QuizAttempt | null;
   lessonStatus: Record<string, LessonStatus>;
   taskInstances: Record<string, TaskInstance>;
+  lessons: Lesson[];
 }): NextAction {
   if (!profile) {
     return {
@@ -41,8 +42,10 @@ export function getNextAction({
   const orderedLevels = LEVELS.slice(Math.max(startIndex, 0));
 
   for (const level of orderedLevels) {
-    const lessons = LESSONS.filter((l) => l.levelId === level.id).sort((a, b) => a.order - b.order);
-    const nextLesson = lessons.find((l) => lessonStatus[l.id] !== "completed");
+    const levelLessons = lessons
+      .filter((l) => l.levelId === level.id)
+      .sort((a, b) => a.order - b.order);
+    const nextLesson = levelLessons.find((l) => lessonStatus[l.id] !== "completed");
     if (nextLesson) {
       return {
         label: `Lanjutkan Belajar: ${nextLesson.title}`,
