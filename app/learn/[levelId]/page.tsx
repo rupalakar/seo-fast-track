@@ -4,9 +4,9 @@ import Link from "next/link";
 import { use } from "react";
 import { notFound } from "next/navigation";
 import { LEVELS } from "@/content/levels";
-import { LESSONS } from "@/content/lessons";
 import { SKILLS } from "@/content/skills";
 import { useProgressStore, useQuizStore } from "@/lib/store";
+import { useLessonsStore } from "@/lib/store/lessonsRemote";
 import { isSectionMasteredForLevel } from "@/lib/domain/placementEngine";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,10 +20,13 @@ export default function LevelPage({ params }: { params: Promise<{ levelId: strin
   const level = LEVELS.find((l) => l.id === levelId);
   const lessonStatus = useProgressStore((s) => s.lessonStatus);
   const attempt = useQuizStore((s) => s.latestAttempt);
+  const allLessons = useLessonsStore((s) => s.lessons);
 
   if (!level) notFound();
 
-  const lessons = LESSONS.filter((l) => l.levelId === level.id).sort((a, b) => a.order - b.order);
+  const lessons = allLessons
+    .filter((l) => l.levelId === level.id)
+    .sort((a, b) => a.order - b.order);
   const mastered = isSectionMasteredForLevel(attempt, level.id as LevelId);
   const skillNames = level.skillIds
     .map((id) => SKILLS.find((s) => s.id === id)?.name)

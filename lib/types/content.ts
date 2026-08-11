@@ -42,6 +42,14 @@ export type ContentBlock =
   | { type: "callout"; tone: "info" | "warning" | "tip"; text: string }
   | { type: "source"; label: string; url: string };
 
+export type LessonResourceType = "article" | "youtube" | "pdf" | "video";
+
+export interface LessonResource {
+  type: LessonResourceType;
+  label: string;
+  url: string;
+}
+
 export interface Lesson {
   id: string;
   levelId: LevelId;
@@ -51,8 +59,8 @@ export interface Lesson {
   summary: string;
   estMinutes: number;
   blocks: ContentBlock[];
-  sources: { label: string; url: string }[];
-  /** Indonesian search phrase used to link to relevant YouTube videos — no specific video URLs are hardcoded since they can't be verified to still exist. */
+  resources: LessonResource[];
+  /** Indonesian search phrase used as a fallback YouTube search link when no explicit "youtube" resource is set. */
   videoSearchQuery?: string;
 }
 

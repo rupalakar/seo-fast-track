@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { LEVELS } from "@/content/levels";
-import { LESSONS } from "@/content/lessons";
 import { useProgressStore, useQuizStore } from "@/lib/store";
+import { useLessonsStore } from "@/lib/store/lessonsRemote";
 import { isSectionMasteredForLevel } from "@/lib/domain/placementEngine";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -14,6 +14,8 @@ import { ChevronRight } from "lucide-react";
 export default function LearnPage() {
   const lessonStatus = useProgressStore((s) => s.lessonStatus);
   const attempt = useQuizStore((s) => s.latestAttempt);
+  const allLessons = useLessonsStore((s) => s.lessons);
+  const lessonsLoading = useLessonsStore((s) => s.loading && !s.loaded);
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -21,9 +23,10 @@ export default function LearnPage() {
         title="Belajar"
         description="Kurikulum fast-track — fokus ke skill yang langsung bisa dipraktikkan."
       />
+      {lessonsLoading && <p className="mb-4 text-sm text-zinc-400">Memuat materi...</p>}
       <div className="space-y-3">
         {LEVELS.map((level) => {
-          const lessons = LESSONS.filter((l) => l.levelId === level.id).sort(
+          const lessons = allLessons.filter((l) => l.levelId === level.id).sort(
             (a, b) => a.order - b.order
           );
           const completedCount = lessons.filter(

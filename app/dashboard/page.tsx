@@ -12,6 +12,7 @@ import {
 } from "@/lib/store";
 import { LEVELS } from "@/content/levels";
 import { INTERVIEW_QUESTIONS } from "@/content/interview-questions";
+import { useLessonsStore } from "@/lib/store/lessonsRemote";
 import { getNextAction } from "@/lib/domain/nextAction";
 import { PageHeader } from "@/components/layout/page-header";
 import { NextActionCard } from "@/components/dashboard/next-action-card";
@@ -27,8 +28,9 @@ export default function DashboardPage() {
   const applications = useApplicationsStore((s) => s.items);
   const networkingItems = useNetworkingStore((s) => s.items);
   const interviewLogs = useInterviewStore((s) => s.logs);
+  const lessons = useLessonsStore((s) => s.lessons);
 
-  const nextAction = getNextAction({ profile, attempt, lessonStatus, taskInstances });
+  const nextAction = getNextAction({ profile, attempt, lessonStatus, taskInstances, lessons });
   const focusLevel = attempt ? LEVELS.find((l) => l.id === attempt.placementLevelId) : null;
 
   const tasksAwaitingReview = Object.values(taskInstances).filter(
