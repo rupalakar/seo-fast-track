@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { OnboardingProfile } from "@/lib/types/state";
 
 interface OnboardingState {
@@ -8,13 +7,8 @@ interface OnboardingState {
   reset: () => void;
 }
 
-export const useOnboardingStore = create<OnboardingState>()(
-  persist(
-    (set) => ({
-      profile: null,
-      setProfile: (profile) => set({ profile }),
-      reset: () => set({ profile: null }),
-    }),
-    { name: "seo-ft/onboarding", skipHydration: true }
-  )
-);
+export const useOnboardingStore = create<OnboardingState>()((set) => ({
+  profile: null,
+  setProfile: (profile) => set({ profile }),
+  reset: () => set({ profile: null }),
+}));

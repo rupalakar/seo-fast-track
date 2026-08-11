@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { LessonStatus } from "@/lib/types/state";
 
 interface ProgressState {
@@ -8,14 +7,9 @@ interface ProgressState {
   reset: () => void;
 }
 
-export const useProgressStore = create<ProgressState>()(
-  persist(
-    (set) => ({
-      lessonStatus: {},
-      setLessonStatus: (lessonId, status) =>
-        set((s) => ({ lessonStatus: { ...s.lessonStatus, [lessonId]: status } })),
-      reset: () => set({ lessonStatus: {} }),
-    }),
-    { name: "seo-ft/progress", skipHydration: true }
-  )
-);
+export const useProgressStore = create<ProgressState>()((set) => ({
+  lessonStatus: {},
+  setLessonStatus: (lessonId, status) =>
+    set((s) => ({ lessonStatus: { ...s.lessonStatus, [lessonId]: status } })),
+  reset: () => set({ lessonStatus: {} }),
+}));

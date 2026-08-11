@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { PortfolioItem } from "@/lib/types/state";
 import { generateId } from "@/lib/utils";
 
@@ -11,26 +10,21 @@ interface PortfolioState {
   reset: () => void;
 }
 
-export const usePortfolioStore = create<PortfolioState>()(
-  persist(
-    (set, get) => ({
-      items: [],
-      addItem: (item) => {
-        const newItem: PortfolioItem = {
-          ...item,
-          id: generateId("pf"),
-          createdAt: new Date().toISOString(),
-        };
-        set({ items: [...get().items, newItem] });
-        return newItem;
-      },
-      updateItem: (id, patch) =>
-        set((s) => ({
-          items: s.items.map((i) => (i.id === id ? { ...i, ...patch } : i)),
-        })),
-      removeItem: (id) => set((s) => ({ items: s.items.filter((i) => i.id !== id) })),
-      reset: () => set({ items: [] }),
-    }),
-    { name: "seo-ft/portfolio", skipHydration: true }
-  )
-);
+export const usePortfolioStore = create<PortfolioState>()((set, get) => ({
+  items: [],
+  addItem: (item) => {
+    const newItem: PortfolioItem = {
+      ...item,
+      id: generateId("pf"),
+      createdAt: new Date().toISOString(),
+    };
+    set({ items: [...get().items, newItem] });
+    return newItem;
+  },
+  updateItem: (id, patch) =>
+    set((s) => ({
+      items: s.items.map((i) => (i.id === id ? { ...i, ...patch } : i)),
+    })),
+  removeItem: (id) => set((s) => ({ items: s.items.filter((i) => i.id !== id) })),
+  reset: () => set({ items: [] }),
+}));

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import type { TaskInstance, TaskSubmission } from "@/lib/types/state";
 import {
   approveTask,
@@ -23,64 +22,59 @@ interface TasksState {
   reset: () => void;
 }
 
-export const useTasksStore = create<TasksState>()(
-  persist(
-    (set, get) => ({
-      instances: {},
-      getOrCreate: (templateId) => {
-        const existing = get().instances[templateId];
-        if (existing) return existing;
-        const created = createTaskInstance(templateId);
-        set((s) => ({ instances: { ...s.instances, [templateId]: created } }));
-        return created;
+export const useTasksStore = create<TasksState>()((set, get) => ({
+  instances: {},
+  getOrCreate: (templateId) => {
+    const existing = get().instances[templateId];
+    if (existing) return existing;
+    const created = createTaskInstance(templateId);
+    set((s) => ({ instances: { ...s.instances, [templateId]: created } }));
+    return created;
+  },
+  start: (templateId) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: { ...s.instances, [templateId]: startTask(instance) },
+    }));
+  },
+  submit: (templateId, submission) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: {
+        ...s.instances,
+        [templateId]: submitForReview(instance, submission),
       },
-      start: (templateId) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: { ...s.instances, [templateId]: startTask(instance) },
-        }));
+    }));
+  },
+  toggleRubric: (templateId, index) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: {
+        ...s.instances,
+        [templateId]: toggleRubricCheck(instance, index),
       },
-      submit: (templateId, submission) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: {
-            ...s.instances,
-            [templateId]: submitForReview(instance, submission),
-          },
-        }));
+    }));
+  },
+  approve: (templateId) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: { ...s.instances, [templateId]: approveTask(instance) },
+    }));
+  },
+  requestRevision: (templateId, note) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: {
+        ...s.instances,
+        [templateId]: sendForRevision(instance, note),
       },
-      toggleRubric: (templateId, index) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: {
-            ...s.instances,
-            [templateId]: toggleRubricCheck(instance, index),
-          },
-        }));
-      },
-      approve: (templateId) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: { ...s.instances, [templateId]: approveTask(instance) },
-        }));
-      },
-      requestRevision: (templateId, note) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: {
-            ...s.instances,
-            [templateId]: sendForRevision(instance, note),
-          },
-        }));
-      },
-      resume: (templateId) => {
-        const instance = get().getOrCreate(templateId);
-        set((s) => ({
-          instances: { ...s.instances, [templateId]: resumeAfterRevision(instance) },
-        }));
-      },
-      reset: () => set({ instances: {} }),
-    }),
-    { name: "seo-ft/tasks", skipHydration: true }
-  )
-);
+    }));
+  },
+  resume: (templateId) => {
+    const instance = get().getOrCreate(templateId);
+    set((s) => ({
+      instances: { ...s.instances, [templateId]: resumeAfterRevision(instance) },
+    }));
+  },
+  reset: () => set({ instances: {} }),
+}));
